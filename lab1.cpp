@@ -1,3 +1,8 @@
+//Author: Ryan Woodworth
+//Student #: 500752821
+// Date: 05/02/19
+//Class: CPS616 Sec. 02
+
 #include <iostream>
 #include <cstdlib>
 #include <chrono>
