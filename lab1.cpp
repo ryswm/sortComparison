@@ -7,10 +7,10 @@ void printList(int arr[], int size);
 void selectionSort(int test[], int size);
 void mergeSort(int test[], int start, int end);
 void mergeHelper(int test[], int start, int middle, int end);
-//void mixedSort(int test[], int size);
+void mixedSort(int test[], int start, int end);
 
 int main(){
-    const int LIMIT = 6; //Test size
+    const int LIMIT = 1; //Test size
     int arraySizes[6] = {6, 60, 240, 500, 10000, 36000};
 
     for(int i = 0; i < LIMIT; i++){                         // Loop over test 6 times; 6*3tests = 18 results printed
@@ -30,7 +30,7 @@ int main(){
         }        
          
         /****** Start Sorting ******/
-        printList(testCaseM, caseSize);
+        printList(testCaseX, caseSize);
 
 
         auto startS = chrono::high_resolution_clock::now();  // start time for test
@@ -45,14 +45,15 @@ int main(){
         mergeSort(testCaseM, 0, caseSize-1);
         auto endM = chrono::high_resolution_clock::now();
         elapsed = endM - startM;
-        printList(testCaseM, caseSize);
+        
         cout<<"Time to merge sort = "<<elapsed.count()<<endl;
 
         
         auto startX = chrono::high_resolution_clock::now();
-        //mixedSort();
+        mixedSort(testCaseX, 0, caseSize-1);
         auto endX = chrono::high_resolution_clock::now();
         elapsed = endX - startX;
+        printList(testCaseX, caseSize);
         cout<<"Time to merge/selection sort = "<<elapsed.count()<<endl;
 
         
@@ -113,6 +114,21 @@ void mergeSort(int test[], int start, int end){
     }
 }
 
+void mixedSort(int test[], int start, int end){
+    if(start < end){
+        int middle = (end + start)/2;
+        mergeSort(test, start, middle);
+        mergeSort(test, middle+1, end);
+
+        if((end-start) < 6){
+            selectionSort(test, end-1);
+        }
+        else {
+            mergeHelper(test, start, middle, end);
+        }
+    }
+}
+
 void mergeHelper(int test[], int start, int middle, int end){
     int x = start;
     int y = middle + 1;
@@ -121,14 +137,22 @@ void mergeHelper(int test[], int start, int middle, int end){
     temp = new int[end-start+1];
 
     for(int i = start ;i <= end ;i++) {
-        if(x > middle) {                        //checks if first part comes to an end or not .
-            temp[ z++ ] = test[ y++] ;
-        } else if ( y > end) {               //checks if second part comes to an end or not
-            temp[ z++ ] = test[ x++ ];
-        } else if( test[ x ] < test[ y ]) {       //checks which part has smaller element.
-            temp[ z++ ] = test[ x++ ];
+        if(x > middle) {                     //if list1 end  
+            temp[ z ] = test[ y] ;
+            z++;
+            y++;
+        } else if ( y > end) {               // if list2 end
+            temp[ z ] = test[ x ];
+            z++;
+            x++;
+        } else if( test[ x ] < test[ y ]) {     // if elem in list 1 < elem in list 2
+            temp[ z ] = test[ x ];
+            z++;
+            x++;
         } else {
-            temp[ z++ ] = test[ y++];
+            temp[ z ] = test[ y];
+            z++;
+            y++;
         }
     }
 
