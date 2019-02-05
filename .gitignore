@@ -1,0 +1,6 @@
+#Ignore all
+*
+
+#Unignore c++ files
+!*.cpp
+!.gitignore
